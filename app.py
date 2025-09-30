@@ -2,6 +2,7 @@ from flask import Flask
 from routes.alunos import alunos_bp
 from routes.saudacao import saudacao_bp
 from routes.curso import curso_bp
+from routes.weather import weather_bp
 
 app = Flask(__name__)
 
@@ -9,6 +10,7 @@ app = Flask(__name__)
 app.register_blueprint(alunos_bp)
 app.register_blueprint(saudacao_bp)
 app.register_blueprint(curso_bp)
+app.register_blueprint(weather_bp)
 
 if __name__ == "__main__":
     app.run(debug=True)
