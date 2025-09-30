@@ -1,9 +1,11 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Blueprint
 from utils import open_db, save_db, get_aluno
 
 app = Flask(__name__)
 
-@app.route('/alunos', methods=['GET', 'POST'])
+alunos_bp = Blueprint("alunos", __name__)
+
+@alunos_bp.route('/alunos', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def alunos():
     db = open_db()
 

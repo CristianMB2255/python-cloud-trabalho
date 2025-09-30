@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, Blueprint
-from utils import open_db, aluno_exists
+from utils import open_db, get_aluno
 import requests
 
 app = Flask(__name__)
@@ -14,7 +14,7 @@ def weather():
 
     db = open_db()
     
-    aluno = aluno_exists(aluno_req, db)
+    aluno = get_aluno(aluno_req, db)
     if not aluno:
         return jsonify(error='Student not found or name malformed.'), 404
 
