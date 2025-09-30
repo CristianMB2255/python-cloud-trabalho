@@ -55,5 +55,40 @@ def aluno():
         save_db(db)
         return jsonify(data=db)
     
+    if request.method == 'PUT':
+        if not request.json:
+            return jsonify(error='Please pass a student JSON as argument.'), 400
+
+        # Finds student and updates
+        updated = False
+        for aluno in request.json['alunos']:
+            for i, a in enumerate(db['alunos']):
+                aluno_name = aluno.get('name')
+                if aluno_name:
+                    if a['name'] == aluno_name:
+                        db['alunos'][i].update(aluno)
+                        updated = True
+                else:
+                    return jsonify(error='Field "name" is required.'), 400
+
+        if updated:
+            save_db(db)
+            return jsonify(data=db)
+        else:
+            return jsonify(error='Student not found.'), 404
+    
+    if request.method == 'DELETE':
+        aluno_req = request.args.get('aluno')
+        if not aluno_req:
+            return jsonify(error='Please provide a student name.'), 400
+        
+        aluno = get_aluno(aluno_req, db)
+        if not aluno:
+            return jsonify(error='Student not found or name malformed.'), 404
+        
+        db['alunos'].remove(aluno)
+        save_db(db)
+        return jsonify(data=db)
+
 if __name__ == "__main__":
     app.run(debug=True)
