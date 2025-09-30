@@ -1,0 +1,28 @@
+{
+    "alunos": [
+        {
+            "name": "Cristian",
+            "city": "Curitiba",
+            "curso": "CC"
+        },
+        {
+            "name": "Felipe",
+            "city": "Curitiba",
+            "curso": "CC"
+        },
+        {
+            "name": "Meiko",
+            "city": "Osaka"
+        },
+        {
+            "name": "Enzo",
+            "city": "Osasco",
+            "curso": "ADS"
+        },
+        {
+            "name": "Abel",
+            "city": "Mossoró",
+            "curso": "Biologia"
+        }
+    ]
+}
