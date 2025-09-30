@@ -1,32 +1,10 @@
 from flask import Flask, request, jsonify
-import json
+from utils import open_db, save_db, get_aluno
 
 app = Flask(__name__)
 
-DB_FILE = 'alunos.json'
-
-# Checks the existence of a student
-def get_aluno(aluno_name, db):
-    for aluno in db['alunos']:
-        if (aluno['name']) == aluno_name:
-                return aluno
-    return False
-
-# Opens file
-def open_db():
-    with open(DB_FILE) as fr:
-        return json.load(fr)
-    if not fr:
-        return jsonify(error='Error trying to open file.'), 500
-    
-#Saves database
-def save_db(db):
-    with open(DB_FILE, 'w') as fw:
-        json.dump(db, fw, indent=4)
-
-
 @app.route('/alunos', methods=['GET', 'POST'])
-def aluno():
+def alunos():
     db = open_db()
 
     if request.method == 'GET':
@@ -89,6 +67,7 @@ def aluno():
         db['alunos'].remove(aluno)
         save_db(db)
         return jsonify(data=db)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
