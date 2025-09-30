@@ -3,7 +3,8 @@
         {
             "name": "Cristian",
             "city": "Curitiba",
-            "curso": "CC"
+            "curso": "CC",
+            "github_repo": "https://api.github.com/repos/CristianMB2255/python-cloud-trabalho"
         },
         {
             "name": "Felipe",
