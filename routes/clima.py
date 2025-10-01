@@ -4,10 +4,10 @@ import requests
 
 app = Flask(__name__)
 
-weather_bp = Blueprint("weather", __name__)
+clima_bp = Blueprint("clima", __name__)
 
-@weather_bp.route('/weather')
-def weather():
+@clima_bp.route('/clima')
+def clima():
     aluno_req = request.args.get('aluno')
     if not aluno_req:
         return jsonify(error='Please provide a student name.'), 400
@@ -41,14 +41,11 @@ def weather():
     if not geo_data:
         return jsonify(error=f"City '{city}' not found"), 404
 
-    lat = geo_data[0]["lat"]
-    lon = geo_data[0]["lon"]
-
     # See weather API
     w_url = "https://api.open-meteo.com/v1/forecast"
     w_params = {
-        "latitude": lat,
-        "longitude": lon,
+        "latitude": geo_data[0]["lat"],
+        "longitude": geo_data[0]["lon"],
         "current_weather": "true"
     }
 
