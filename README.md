@@ -9,10 +9,18 @@
 
 ---
 
+### ⚠️ AVISO
+Este repositório foi criado como ambiente de estudos. Ele não possui implementações de segurança e apresenta diversas vulnerabilidades. Use-o apenas para fins educacionais.
+
+---
+
 ## 📌 Rotas da API
 
 - **`alunos.py`**
-  - `GET /alunos` → lista todos os alunos / lista alunos por nome 
+  - `GET /alunos` → lista estudantes
+  - **Parâmetros**:
+    - **`aluno`** _(opcional)_: Filtrar por nome de estudante.
+      - **Ex**: `?aluno=João`
   - `POST /alunos` → cria novos alunos  
   - `PUT /alunos/` → atualiza informações de alunos  
   - `DELETE /alunos/` → remove alunos
