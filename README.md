@@ -14,6 +14,12 @@ Este repositório foi criado como ambiente de estudos. Ele não possui implement
 
 ---
 
+## 🔒 ENV
+
+- `WEATHER_KEY` - Key API de clima
+
+---
+
 ## 📌 Rotas da API
 
 - **`alunos.py`**

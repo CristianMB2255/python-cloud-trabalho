@@ -1,6 +1,10 @@
 from flask import Flask, jsonify, request, Blueprint
 from utils.functions import open_db, get_aluno
+from dotenv import load_dotenv
 import requests
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -18,52 +22,32 @@ def clima():
     if not aluno:
         return jsonify(error='Student not found or name malformed.'), 404
 
-    # Get student's city
-    city = aluno.get('city')
-    if not city:
+    aluno_city = aluno.get('city')
+    if not aluno_city:
         return jsonify(error='Student does not have a registered city.'), 400
 
-    # Find lat and lon by city API
-    geocode_url = "https://nominatim.openstreetmap.org/search"
-    geocode_params = {
-        "q": city,
-        "format": "json",
-        "limit": 1
-    }
-    headers = {"User-Agent": "get_weather"}
-
-    geo_resp = requests.get(geocode_url, params=geocode_params, headers=headers)
-
-    if geo_resp.status_code != 200:
-        return jsonify(error=f"Geocoding service failed ({geo_resp.status_code})"), 500
-
-    geo_data = geo_resp.json()
-    if not geo_data:
-        return jsonify(error=f"City '{city}' not found"), 404
-
-    # See weather API
-    w_url = "https://api.open-meteo.com/v1/forecast"
+    # Weather API
+    w_url = "https://api.weatherapi.com/v1/current.json"
     w_params = {
-        "latitude": geo_data[0]["lat"],
-        "longitude": geo_data[0]["lon"],
-        "current_weather": "true"
+        "key": os.getenv("WEATHER_KEY"),
+        "q": aluno_city,
     }
 
+    # Request data
     wresp = requests.get(w_url, params=w_params)
     if wresp.status_code != 200:
         return jsonify(error=f"Weather service failed ({wresp.status_code})"), 500
 
     wdata = wresp.json()
-
-    if "current_weather" not in wdata:
+    if "current" not in wdata:
         return jsonify({"error": "Weather data not available"}), 500
 
-    current = wdata["current_weather"]
+    current = wdata["current"]
 
     result = {
-        "city": city,
-        "temperature_C": current.get("temperature"),
-        "windspeed_kmh": current.get("windspeed")
+        "city": aluno_city,
+        "temperature_C": current.get("temp_c"),
+        "windspeed_kmh": current.get("wind_kph")
     }
 
     return jsonify(result)
