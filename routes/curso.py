@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, Blueprint
-from utils import open_db, get_aluno
+from utils.functions import open_db, get_aluno
 
 app = Flask(__name__)
 
