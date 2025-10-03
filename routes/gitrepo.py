@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, Blueprint
-from utils.functions import open_db, get_aluno
+from utils.helpers import validate_and_get_aluno
 import requests
 
 app = Flask(__name__)
@@ -8,15 +8,9 @@ get_repo_bp = Blueprint("/github-repo", __name__)
 
 @get_repo_bp.route('/github-repo')
 def github_repo():
-    aluno_req = request.args.get('aluno')
-    if not aluno_req:
-        return jsonify(error='Please provide a student name.'), 400
-
-    db = open_db()
-    
-    aluno = get_aluno(aluno_req, db)
-    if not aluno:
-        return jsonify(error='Student not found or name malformed.'), 404
+    aluno, error = validate_and_get_aluno(request.args)
+    if error:
+        return error
 
     repo_link = aluno.get('github_repo')
     if not repo_link:

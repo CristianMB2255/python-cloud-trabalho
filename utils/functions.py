@@ -3,7 +3,7 @@ import json
 DB_FILE = 'alunos.json'
 
 # Checks the existence of a student
-def get_aluno(aluno_name, db):
+def get_aluno_name(aluno_name, db):
     for aluno in db['alunos']:
         if (aluno['name']) == aluno_name:
                 return aluno
@@ -11,10 +11,12 @@ def get_aluno(aluno_name, db):
 
 # Opens file
 def open_db():
-    with open(DB_FILE) as fr:
-        return json.load(fr)
-    if not fr:
-        return jsonify(error='Error trying to open file.'), 500
+    try:
+        with open(DB_FILE) as fr:
+            return json.load(fr)
+    
+    except:
+        return False
     
 #Saves database
 def save_db(db):

@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, Blueprint
-from utils.functions import open_db, get_aluno
+from utils.helpers import validate_and_get_aluno
 from dotenv import load_dotenv
 import requests
 import os
@@ -12,15 +12,9 @@ clima_bp = Blueprint("clima", __name__)
 
 @clima_bp.route('/clima')
 def clima():
-    aluno_req = request.args.get('aluno')
-    if not aluno_req:
-        return jsonify(error='Please provide a student name.'), 400
-
-    db = open_db()
-    
-    aluno = get_aluno(aluno_req, db)
-    if not aluno:
-        return jsonify(error='Student not found or name malformed.'), 404
+    aluno, error = validate_and_get_aluno(request.args)
+    if error:
+        return error
 
     aluno_city = aluno.get('city')
     if not aluno_city:
