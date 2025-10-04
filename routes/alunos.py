@@ -20,18 +20,18 @@ def alunos():
             return jsonify(error='Please provide a student object as argument.'), 400
 
     if reqMethod == 'GET':
-        aluno_req = request.args.get('aluno')
+        aluno_req = request.args.get('aluno') # Change to endpoint
 
         # Returns all students
         if not aluno_req:
-            return jsonify(alunosList)
-        
+            return jsonify(data=alunosList)
+
         # Returns a specific student
         aluno, error = validate_and_get_aluno(request.args)
         if error:
             return error
         
-        return jsonify(aluno)
+        return jsonify(data=aluno)
 
     elif reqMethod == 'POST':
         for aluno in request.json['alunos']:
@@ -71,10 +71,10 @@ def alunos():
         if error:
             return error
         
-        # Removes the student
         alunosList.remove(aluno)
+
         save_db(db)
-        return jsonify(data=db)
+        return "", 204 #change to 204, no content
     
     else:
         return jsonify(error='Method not allowed. Supported methods: GET, POST, PUT, DELETE.'), 405
